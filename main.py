@@ -5,7 +5,8 @@ import subprocess
 app = Flask(__name__)
 
 @app.route("/")
-def replicator():
+def replicator(event=None):
+    print("events:",event)
     proc = subprocess.Popen(["gsutil", "-m", "rsync", "-d", "-r", "gs://masood-mumbai", "gs://masood-delhi"])
     try:
         outs, errs = proc.communicate(timeout=60)
