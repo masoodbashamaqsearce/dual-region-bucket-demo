@@ -5,8 +5,8 @@ import subprocess
 app = Flask(__name__)
 
 @app.route("/", methods=['POST'])
-def replicator(event=None):
-    print("events:",event)
+def replicator(__GCP_CloudEventsMode):
+    print("events:",__GCP_CloudEventsMode)
     proc = subprocess.Popen(["gsutil", "-m", "rsync", "-d", "-r", "gs://masood-mumbai", "gs://masood-delhi"])
     try:
         outs, errs = proc.communicate(timeout=60)
