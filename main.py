@@ -5,7 +5,7 @@ import subprocess
 app = Flask(__name__)
 
 @app.route("/")
-def replicator(__GCP_CloudEventsMode=None):
+def replicator(__GCP_CloudEventsMode=None: str):
     print("events:",__GCP_CloudEventsMode)
     proc = subprocess.Popen(["gsutil", "-m", "rsync", "-d", "-r", "gs://masood-mumbai", "gs://masood-delhi"])
     try:
