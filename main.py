@@ -2,11 +2,15 @@ import os
 from flask import Flask, request
 import subprocess
 import base64
+import logging as log
+import google.cloud.logging as logging
 
 app = Flask(__name__)
 
 @app.route("/", methods=['POST'])
 def replicator():
+    logging_client = logging.Client()
+    logging_client.setup_logging()
     data = request.get_json()
     if not data:
         msg = 'no Pub/Sub message received'
@@ -24,7 +28,7 @@ def replicator():
         name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
         
     resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
-    print(resp)
+    log.info(resp)
     return (resp, 200)
 
 if __name__ == "__main__":
