@@ -22,6 +22,7 @@ def replicator():
         print(f'error: {msg}')
         return f'Bad Request: {msg}', 400
 
+    log.info(data)
     pubsub_message = data['message']
     name = 'World'
     if isinstance(pubsub_message, dict) and 'data' in pubsub_message:
