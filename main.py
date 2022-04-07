@@ -12,7 +12,6 @@ def replicator():
     logging_client = logging.Client()
     logging_client.setup_logging()
     data = request.get_json()
-    request.ack()
     if not data:
         msg = 'no Pub/Sub message received'
         print(f'error: {msg}')
