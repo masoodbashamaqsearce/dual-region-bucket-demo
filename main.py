@@ -7,8 +7,8 @@ import google.cloud.logging as logging
 
 app = Flask(__name__)
 
-@app.route("/", methods=['POST'])
-def replicator():
+@app.route("/create", methods=['POST'])
+def create():
     logging_client = logging.Client()
     logging_client.setup_logging()
     data = request.get_json()
@@ -22,7 +22,7 @@ def replicator():
         print(f'error: {msg}')
         return f'Bad Request: {msg}', 400
 
-    log.info(data)
+    log.info("create method called")
     pubsub_message = data['message']
     name = 'World'
     if isinstance(pubsub_message, dict) and 'data' in pubsub_message:
@@ -40,6 +40,22 @@ def update():
     logging_client.setup_logging()
     data = request.get_json()
     pubsub_message = data['message']
+    log.info("metadata update method called...")
+    name = 'World'
+    if isinstance(pubsub_message, dict) and 'data' in pubsub_message:
+        name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
+        
+    resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
+    log.info(resp)
+    return (resp, 200)
+
+@app.route("/delete", methods=['POST'])
+def delete():
+    logging_client = logging.Client()
+    logging_client.setup_logging()
+    data = request.get_json()
+    pubsub_message = data['message']
+    log.info("delete method called...")
     name = 'World'
     if isinstance(pubsub_message, dict) and 'data' in pubsub_message:
         name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
