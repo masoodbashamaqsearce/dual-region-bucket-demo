@@ -12,6 +12,7 @@ def replicator():
     logging_client = logging.Client()
     logging_client.setup_logging()
     data = request.get_json()
+    request.ack()
     if not data:
         msg = 'no Pub/Sub message received'
         print(f'error: {msg}')
@@ -30,7 +31,7 @@ def replicator():
         
     resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
     log.info(resp)
-    log.info(request.headers)
+    log.info(data.keys())
     return (resp, 200)
 
 if __name__ == "__main__":
