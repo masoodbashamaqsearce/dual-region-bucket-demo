@@ -33,5 +33,20 @@ def replicator():
     log.info(data.get("attributes"))
     return (resp, 200)
 
+
+@app.route("/update", methods=['POST'])
+def update():
+    logging_client = logging.Client()
+    logging_client.setup_logging()
+    data = request.get_json()
+    pubsub_message = data['message']
+    name = 'World'
+    if isinstance(pubsub_message, dict) and 'data' in pubsub_message:
+        name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
+        
+    resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
+    log.info(resp)
+    return (resp, 200)
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
