@@ -30,7 +30,7 @@ def replicator():
         
     resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
     log.info(resp)
-    log.info(data.get("eventType"))
+    log.info(data.get("attributes"))
     return (resp, 200)
 
 if __name__ == "__main__":
