@@ -33,7 +33,8 @@ def create():
     log.info(msg["name"])
     log.info(msg["selfLink"])
     source="gs://masood-mumbai/" + msg["name"]
-    proc = subprocess.Popen(["gsutil", "-m", "cp", "-r", "-p", source, "gs://masood-delhi/"])
+    dest="gs://masood-delhi/" + msg["name"]
+    proc = subprocess.Popen(["gsutil", "-m", "cp", "-r", "-p", source, dest])
     try:
         outs, errs = proc.communicate(timeout=3500)
     except Exception as e:
