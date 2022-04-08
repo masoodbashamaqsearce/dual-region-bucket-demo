@@ -27,11 +27,10 @@ def create():
     name = 'World'
     if isinstance(pubsub_message, dict) and 'data' in pubsub_message:
         name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
-        
-    resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
-    log.info(resp)
-    log.info(data.get("attributes"))
-    return (resp, 200)
+    
+    log.info(name)
+    log.info(type(name))
+    return (name, 200)
 
 
 @app.route("/update", methods=['POST'])
@@ -46,7 +45,7 @@ def update():
         name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
         
     resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
-    log.info(resp)
+    log.info(name)
     return (resp, 200)
 
 @app.route("/delete", methods=['POST'])
@@ -61,7 +60,7 @@ def delete():
         name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
         
     resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
-    log.info(resp)
+    log.info(name)
     return (resp, 200)
 
 if __name__ == "__main__":
