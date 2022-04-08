@@ -29,7 +29,6 @@ def create():
         name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
     
     log.info(name)
-    log.info(type(name))
     msg=json.loads(name)
     log.info(msg["name"])
     return (name, 200)
