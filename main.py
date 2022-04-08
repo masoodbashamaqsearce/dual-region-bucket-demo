@@ -1,4 +1,4 @@
-import os
+import os,json
 from flask import Flask, request
 import subprocess
 import base64
@@ -30,6 +30,8 @@ def create():
     
     log.info(name)
     log.info(type(name))
+    msg=json.loads(name)
+    log.info(msg["name"])
     return (name, 200)
 
 
