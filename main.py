@@ -16,22 +16,21 @@ def create():
         msg = 'no Pub/Sub message received'
         print(f'error: {msg}')
         return f'Bad Request: {msg}', 400
-
     if not isinstance(data, dict) or 'message' not in data:
         msg = 'invalid Pub/Sub message format'
         print(f'error: {msg}')
         return f'Bad Request: {msg}', 400
-
     log.info("create method called")
     pubsub_message = data['message']
     name = 'World'
     if isinstance(pubsub_message, dict) and 'data' in pubsub_message:
         name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
-    
     log.info(name)
     msg=json.loads(name)
     log.info(msg["name"])
-    log.info(msg["selfLink"])
+    if msg["name"].endswith("/"):
+        log.info("event skipped.. folder creation.")
+        return (name, 200)
     source="gs://masood-mumbai/" + msg["name"]
     dest="gs://masood-delhi/" + msg["name"]
     proc = subprocess.Popen(["gsutil", "-m", "cp", "-r", "-p", source, dest])
@@ -41,8 +40,6 @@ def create():
         log.info(e)
         proc.kill()
         outs, errs = proc.communicate()
-    log.info(outs)
-    log.info(errs)
     return (name, 200)
 
 
