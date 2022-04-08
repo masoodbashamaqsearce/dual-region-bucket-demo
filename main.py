@@ -31,6 +31,17 @@ def create():
     log.info(name)
     msg=json.loads(name)
     log.info(msg["name"])
+    log.info(msg["selfLink"])
+    source="gs://masood-mumbai/" + msg["name"]
+    proc = subprocess.Popen(["gsutil", "-m", "cp", "-r", "-p", source, "gs://masood-delhi/"])
+    try:
+        outs, errs = proc.communicate(timeout=3500)
+    except Exception as e:
+        log.info(e)
+        proc.kill()
+        outs, errs = proc.communicate()
+    log.info(outs)
+    log.info(errs)
     return (name, 200)
 
 
