@@ -33,7 +33,7 @@ def create():
         return (name, 200)
     source="gs://masood-mumbai/" + msg["name"]
     dest="gs://masood-delhi/" + msg["name"]
-    proc = subprocess.Popen(["gsutil", "-m", "cp", "-r", "-p", source, dest])
+    proc = subprocess.Popen(["gsutil", "cp", "-r", "-p", source, dest])
     try:
         outs, errs = proc.communicate(timeout=3500)
     except Exception as e:
