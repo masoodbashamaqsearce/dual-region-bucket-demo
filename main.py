@@ -34,13 +34,15 @@ def create():
     source="gs://masood-mumbai/" + msg["name"]
     dest="gs://masood-delhi/" + msg["name"]
     proc = subprocess.Popen(["gsutil", "cp", "-r", "-p", source, dest])
-    #try:
-    #    outs, errs = proc.communicate(timeout=3500)
-    #except Exception as e:
-    #    log.info(e)
-    #    proc.kill()
-    #    outs, errs = proc.communicate()
-    return (name, 200)
+    try:
+        outs, errs = proc.communicate(timeout=3500)
+        return (errs, 200)
+    except Exception as e:
+        log.info(e)
+        proc.kill()
+        outs, errs = proc.communicate()
+        return (errs, 402)
+    
 
 
 @app.route("/update", methods=['POST'])
