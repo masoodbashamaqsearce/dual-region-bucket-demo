@@ -35,13 +35,15 @@ def create():
     dest="gs://masood-delhi/" + msg["name"]
     proc = subprocess.Popen(["gsutil", "cp", "-r", "-p", source, dest])
     try:
-        outs, errs = proc.communicate(timeout=3500)
-        return (errs, 200)
+        outs, errs = proc.communicate()
+        log.info('OK')
+        return ('OK', 200)
     except Exception as e:
         log.info(e)
         proc.kill()
         outs, errs = proc.communicate()
-        return (errs, 402)
+        log.info('NOT OK')
+        return ('NOT OK', 402)
     
 
 
