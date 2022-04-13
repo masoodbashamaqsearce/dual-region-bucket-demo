@@ -62,6 +62,21 @@ def update():
     log.info(name)
     return (resp, 200)
 
+@app.route("/", methods=['POST'])
+def main():
+    logging_client = logging.Client()
+    logging_client.setup_logging()
+    data = request.get_json()
+    pubsub_message = data['message']
+    log.info("metadata update method called...")
+    name = 'World'
+    if isinstance(pubsub_message, dict) and 'data' in pubsub_message:
+        name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
+        
+    resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
+    log.info(name)
+    return (resp, 200)
+
 @app.route("/delete", methods=['POST'])
 def delete():
     logging_client = logging.Client()
