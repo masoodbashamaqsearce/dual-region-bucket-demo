@@ -74,7 +74,7 @@ def main():
         name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
         
     resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
-    log.info(name)
+    log.info(resp)
     return (resp, 200)
 
 @app.route("/delete", methods=['POST'])
