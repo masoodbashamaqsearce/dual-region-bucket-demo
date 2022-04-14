@@ -67,17 +67,19 @@ def main():
     logging_client = logging.Client()
     logging_client.setup_logging()
     data = request.get_json()
-    pubsub_message = data['message']
-    log.info("root method called...")
-    name = 'World'
-    if isinstance(pubsub_message, dict) and 'data' in pubsub_message:
-        name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
-        
-    resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
     wholedata = f"wholedata : {data} ::end of data"
-    log.info(resp)
     log.info(wholedata)
-    return (resp, 200)
+    try:
+        pubsub_message = data['message']
+        log.info("root method called...")
+        name = 'World'
+        if isinstance(pubsub_message, dict) and 'data' in pubsub_message:
+            name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
+        resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
+        log.info(resp)
+    Except Exception as e:
+        log.info(e)
+    return ('OK', 200)
 
 @app.route("/delete", methods=['POST'])
 def delete():
