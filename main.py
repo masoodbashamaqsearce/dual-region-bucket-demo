@@ -77,7 +77,7 @@ def main():
             name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
         resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
         log.info(resp)
-    Except Exception as e:
+    except Exception as e:
         log.info(e)
     return ('OK', 200)
 
