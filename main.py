@@ -67,15 +67,12 @@ def main():
     logging_client = logging.Client()
     logging_client.setup_logging()
     data = request.get_json()
+    log.info("root method called...")
     wholedata = f"wholedata : {data} ::end of data"
     log.info(wholedata)
     try:
-        pubsub_message = data['message']
-        log.info("root method called...")
-        name = 'World'
-        if isinstance(pubsub_message, dict) and 'data' in pubsub_message:
-            name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
-        resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
+        pubsub_message = json.loads(data)
+        resp = f"Hello, {pubsub_message}!!"
         log.info(resp)
     except Exception as e:
         log.info(e)
