@@ -70,9 +70,14 @@ def main():
     log.info("root method called...")
     wholedata = f"wholedata : {data} ::end of data"
     log.info(wholedata)
+    prt = "data['protoPayload']['methodName']:"+data['protoPayload']['methodName']
+    log.info(prt)
+    prt = "data['protoPayload']['resourceName']:"+data['protoPayload']['resourceName']
+    log.info(prt)
+    prt = "data['resource']['labels']['bucket_name']:"+data['resource']['labels']['bucket_name']
+    log.info(prt)
     try:
-        pubsub_message = json.loads(data)
-        resp = f"Hello, {pubsub_message}!!"
+        resp = f"Hello, {data}!!"
         log.info(resp)
     except Exception as e:
         log.info(e)
