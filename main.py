@@ -33,7 +33,7 @@ def create():
         log.info(out)
         dr_flg = json.loads(str(out,"utf-8"))
         if "dual-region" in dr_flg.keys():
-            if dr_flg["dual-region"] is not True or dr_flg["dual-region"] != "true":
+            if dr_flg["dual-region"] != "true":
                 log.info("bucket is not dual region, event skipped")
                 return ("ok",203)
         else:
