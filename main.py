@@ -28,8 +28,8 @@ def create():
     source = "gs://" + scr_bucket
     sp = subprocess.Popen(["gsutil","label","get",source],stdout=subprocess.PIPE)
     out = sp.stdout.read()
-    log.info(out)
-    dr_flg = json.loads(str(out))
+    dr_flg = json.loads(str(out,"utf-8").replace("\n",""))
+    log.info(dr_flg)
     if "dual-region" in dr_flg.keys():
         if dr_flg["dual-region"] is not True:
             log.info("bucket is not dual region, event skipped")
