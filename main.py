@@ -16,21 +16,21 @@ def create():
     wholedata = f"wholedata : {data} ::end of data"
     #log.info(wholedata)
     prt = "data['protoPayload']['methodName']:"+data['protoPayload']['methodName']
-    log.info(prt)
-    prt = "data['protoPayload']['resourceName']:"+data['protoPayload']['resourceName']
-    log.info(prt)
-    prt = "data['resource']['labels']['bucket_name']:"+data['resource']['labels']['bucket_name']
-    log.info(prt)
-    prt = "data['resource']['labels']['location']:"+data['resource']['labels']['location']
-    log.info(prt)
+    #log.info(prt)
+    prt = prt+"\ndata['protoPayload']['resourceName']:"+data['protoPayload']['resourceName']
+    #log.info(prt)
+    prt = prt+"\ndata['resource']['labels']['bucket_name']:"+data['resource']['labels']['bucket_name']
+    #log.info(prt)
+    prt = prt+"\ndata['resource']['labels']['location']:"+data['resource']['labels']['location']
+    #log.info(prt)
     scr_bucket = data['resource']['labels']['bucket_name']
     obj_name = data['protoPayload']['resourceName'].split("/objects/")[1]
     source = "gs://" + scr_bucket
     sp = subprocess.Popen(["gsutil","label","get",source],stdout=subprocess.PIPE)
     out = sp.stdout.read()
     if "no label configuration" not in str(out,"utf-8"):
-        log.info(type(out))
-        log.info(out)
+        #log.info(type(out))
+        #log.info(out)
         try:
             dr_flg = json.loads(str(out,"utf-8"))
         except:
@@ -55,13 +55,13 @@ def create():
     proc = subprocess.Popen(["gsutil", "-m", "cp", "-r", "-p", source, dest])
     try:
         outs, errs = proc.communicate()
-        log.info('OK')
+        #log.info('OK')
         return ('OK', 200)
     except Exception as e:
         log.info(e)
         proc.kill()
         outs, errs = proc.communicate()
-        log.info('NOT OK')
+        #log.info('NOT OK')
         return ('NOT OK', 400)
 
 
