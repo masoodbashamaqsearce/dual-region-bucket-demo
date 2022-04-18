@@ -32,7 +32,7 @@ def create():
     log.info(dr_flg)
     log.info(dr_flg['dual-region'])
     if "dual-region" in dr_flg.keys():
-        if dr_flg["dual-region"] is not True:
+        if dr_flg["dual-region"] is not True or dr_flg["dual-region"] != "true":
             log.info("bucket is not dual region, event skipped")
             return ("ok",203)
     else:
