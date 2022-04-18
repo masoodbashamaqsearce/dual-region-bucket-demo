@@ -31,7 +31,11 @@ def create():
     if "no label configuration" not in str(out,"utf-8"):
         log.info(type(out))
         log.info(out)
-        dr_flg = json.loads(str(out,"utf-8"))
+        try:
+            dr_flg = json.loads(str(out,"utf-8"))
+        except:
+            log.info("not a dual-region bucket, event skipped")
+            return ("OK",207)
         if "dual-region" in dr_flg.keys():
             if dr_flg["dual-region"] != "true":
                 log.info("bucket is not dual region, event skipped")
