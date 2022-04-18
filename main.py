@@ -76,11 +76,6 @@ def main():
     log.info(prt)
     prt = "data['resource']['labels']['bucket_name']:"+data['resource']['labels']['bucket_name']
     log.info(prt)
-    try:
-        resp = f"Hello, {data}!!"
-        log.info(resp)
-    except Exception as e:
-        log.info(e)
     return ('OK', 200)
 
 @app.route("/delete", methods=['POST'])
