@@ -26,9 +26,9 @@ def create():
     scr_bucket = data['resource']['labels']['bucket_name']
     obj_name = data['protoPayload']['resourceName'].split("/objects/")[1]
     source = "gs://" + scr_bucket
-    subprocess.Popen(["gsutil","label","get",source])
-    outs, errs = proc.communicate()
-    log.info(outs)
+    #subprocess.Popen(["gsutil","label","get",source])
+    #outs, errs = proc.communicate()
+    log.info(source)
     if obj_name[-1] == '/':
         log.info("folder created...")
         log.info("event skipped")
