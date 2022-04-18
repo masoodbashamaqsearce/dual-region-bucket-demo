@@ -33,8 +33,8 @@ def create():
         log.info("folder created...")
         log.info("event skipped")
         return('ok',204)
-    source = "gs://" + scr_bucket + obj_name
-    dest_bucket = scr_bucket + "-delhi-backup"
+    source = "gs://" + scr_bucket + "/" + obj_name
+    dest_bucket = scr_bucket + "-delhi-backup/"
     dest = "gs://" + dest_bucket + obj_name
     proc = subprocess.Popen(["gsutil", "-m", "cp", "-r", "-p", source, dest])
     try:
