@@ -15,13 +15,13 @@ def create():
     log.info("create method called")
     wholedata = f"wholedata : {data} ::end of data"
     #log.info(wholedata)
-    prt = "data['protoPayload']['methodName']:"+data['protoPayload']['methodName']
+    prt = "methodName:"+data['protoPayload']['methodName']
     #log.info(prt)
-    prt = prt+"\n data['protoPayload']['resourceName']:"+data['protoPayload']['resourceName']
+    prt = prt+"\nresourceName:"+data['protoPayload']['resourceName']
     #log.info(prt)
-    prt = prt+"\n data['resource']['labels']['bucket_name']:"+data['resource']['labels']['bucket_name']
+    prt = prt+"\nbucket_name:"+data['resource']['labels']['bucket_name']
     #log.info(prt)
-    prt = prt+"\n data['resource']['labels']['location']:"+data['resource']['labels']['location']
+    prt = prt+"\nlocation:"+data['resource']['labels']['location']
     log.info(prt)
     scr_bucket = data['resource']['labels']['bucket_name']
     obj_name = data['protoPayload']['resourceName'].split("/objects/")[1]
