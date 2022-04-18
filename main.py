@@ -28,7 +28,7 @@ def create():
     source = "gs://" + scr_bucket
     sp = subprocess.Popen(["gsutil","label","get",source],stdout=subprocess.PIPE)
     out = sp.stdout.read()
-    if len(out) > 0 or "no label configuration" not in str(out,"utf-8"):
+    if "no label configuration" not in str(out,"utf-8"):
         log.info(type(out))
         log.info(out)
         dr_flg = json.loads(str(out,"utf-8"))
