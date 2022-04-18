@@ -28,16 +28,18 @@ def create():
     source = "gs://" + scr_bucket
     sp = subprocess.Popen(["gsutil","label","get",source],stdout=subprocess.PIPE)
     out = sp.stdout.read()
-    dr_flg = json.loads(str(out,"utf-8").replace("\n",""))
-    log.info(dr_flg)
-    log.info(dr_flg['dual-region'])
-    if "dual-region" in dr_flg.keys():
-        if dr_flg["dual-region"] is not True or dr_flg["dual-region"] != "true":
+    if len(out) > 0:
+        dr_flg = json.loads(str(out,"utf-8").replace("\n",""))
+        if "dual-region" in dr_flg.keys():
+            if dr_flg["dual-region"] is not True or dr_flg["dual-region"] != "true":
+                log.info("bucket is not dual region, event skipped")
+                return ("ok",203)
+        else:
             log.info("bucket is not dual region, event skipped")
-            return ("ok",203)
+            return ("ok",205)
     else:
         log.info("bucket is not dual region, event skipped")
-        return ("ok",205)
+        return ("ok",206)
     if obj_name[-1] == '/':
         log.info("folder created..., event skipped")
         return('ok',204)
