@@ -14,7 +14,7 @@ def create():
     data = request.get_json()
     log.info("create method called")
     wholedata = f"wholedata : {data} ::end of data"
-    log.info(wholedata)
+    #log.info(wholedata)
     prt = "data['protoPayload']['methodName']:"+data['protoPayload']['methodName']
     log.info(prt)
     prt = "data['protoPayload']['resourceName']:"+data['protoPayload']['resourceName']
@@ -29,10 +29,16 @@ def create():
     sp = subprocess.Popen(["gsutil","label","get",source])
     outs, errs = sp.communicate()
     log.info(outs)
-    log.info(type(outs))
+    dr_flg = json.loads(str(outs))
+    if "dual-region" in dr_flg.keys():
+        if dr_flg["dual-region"] is not True:
+            log.info("bucket is not dual region, event skipped")
+            return ("ok",203)
+    else:
+        log.info("bucket is not dual region, event skipped")
+        return ("ok",203)
     if obj_name[-1] == '/':
-        log.info("folder created...")
-        log.info("event skipped")
+        log.info("folder created..., event skipped")
         return('ok',204)
     source = "gs://" + scr_bucket + "/" + obj_name
     dest_bucket = scr_bucket + "-delhi-backup/"
@@ -48,7 +54,6 @@ def create():
         outs, errs = proc.communicate()
         log.info('NOT OK')
         return ('NOT OK', 402)
-    
 
 
 @app.route("/update", methods=['POST'])
