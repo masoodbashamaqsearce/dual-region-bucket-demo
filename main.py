@@ -53,17 +53,7 @@ def create():
     dest_bucket = scr_bucket + "-delhi-backup/"
     dest = "gs://" + dest_bucket + obj_name
     proc = subprocess.Popen(["gsutil", "-m", "cp", "-r", "-p", source, dest])
-    try:
-        outs, errs = proc.communicate()
-        #log.info('OK')
-        return ('OK', 200)
-    except Exception as e:
-        log.info(e)
-        proc.kill()
-        outs, errs = proc.communicate()
-        #log.info('NOT OK')
-        return ('NOT OK', 400)
-
+    return ("OK", 200)
 
 @app.route("/update", methods=['POST'])
 def update():
