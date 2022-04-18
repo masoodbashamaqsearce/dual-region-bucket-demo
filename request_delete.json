@@ -25,7 +25,7 @@
             {
                 "resource": "projects/_/buckets/masood-mumbai-2/objects/11.txt", 
                 "permission": "storage.objects.delete", 
-                "granted": True, 
+                "granted": true, 
                 "resourceAttributes": {}
             }
         ], 

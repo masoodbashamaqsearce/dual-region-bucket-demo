@@ -8,7 +8,7 @@
     "serviceName": "storage.googleapis.com", 
     "methodName": "storage.objects.create", 
     "authorizationInfo": [
-        {"resource": "projects/_/buckets/masood-mumbai-2/objects/10.txt", "permission": "storage.objects.delete", "granted": True, "resourceAttributes": {}}, {"resource": "projects/_/buckets/masood-mumbai-2/objects/10.txt", "permission": "storage.objects.create", "granted": True, "resourceAttributes": {}}
+        {"resource": "projects/_/buckets/masood-mumbai-2/objects/10.txt", "permission": "storage.objects.delete", "granted": true, "resourceAttributes": {}}, {"resource": "projects/_/buckets/masood-mumbai-2/objects/10.txt", "permission": "storage.objects.create", "granted": true, "resourceAttributes": {}}
     ], 
     "resourceName": "projects/_/buckets/masood-mumbai-2/objects/10.txt", 
     "serviceData": 
