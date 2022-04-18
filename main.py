@@ -29,6 +29,7 @@ def create():
     sp = subprocess.Popen(["gsutil","label","get",source])
     outs, errs = sp.communicate()
     log.info(outs)
+    log.info(type(outs))
     if obj_name[-1] == '/':
         log.info("folder created...")
         log.info("event skipped")
