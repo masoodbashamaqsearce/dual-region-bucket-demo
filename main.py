@@ -29,7 +29,9 @@ def create():
     sp = subprocess.Popen(["gsutil","label","get",source],stdout=subprocess.PIPE)
     out = sp.stdout.read()
     if len(out) > 0:
-        dr_flg = json.loads(str(out,"utf-8").replace("\n",""))
+        log.info(type(out))
+        log.info(out)
+        dr_flg = json.loads(str(out,"utf-8"))
         if "dual-region" in dr_flg.keys():
             if dr_flg["dual-region"] is not True or dr_flg["dual-region"] != "true":
                 log.info("bucket is not dual region, event skipped")
