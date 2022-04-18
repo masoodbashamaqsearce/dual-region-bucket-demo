@@ -35,20 +35,20 @@ def create():
             dr_flg = json.loads(str(out,"utf-8"))
         except:
             log.info("not a dual-region bucket, event skipped")
-            return ("OK",207)
+            return ("OK",200)
         if "dual-region" in dr_flg.keys():
             if dr_flg["dual-region"] != "true":
                 log.info("bucket is not dual region, event skipped")
-                return ("ok",203)
+                return ("ok",200)
         else:
             log.info("bucket is not dual region, event skipped")
-            return ("ok",205)
+            return ("ok",200)
     else:
         log.info("bucket is not dual region, event skipped")
-        return ("ok",206)
+        return ("ok",200)
     if obj_name[-1] == '/':
         log.info("folder created..., event skipped")
-        return('ok',204)
+        return('ok',200)
     source = "gs://" + scr_bucket + "/" + obj_name
     dest_bucket = scr_bucket + "-delhi-backup/"
     dest = "gs://" + dest_bucket + obj_name
@@ -62,7 +62,7 @@ def create():
         proc.kill()
         outs, errs = proc.communicate()
         log.info('NOT OK')
-        return ('NOT OK', 402)
+        return ('NOT OK', 400)
 
 
 @app.route("/update", methods=['POST'])
