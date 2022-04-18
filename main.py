@@ -26,8 +26,7 @@ def create():
     scr_bucket = data['resource']['labels']['bucket_name']
     obj_name = data['protoPayload']['resourceName'].split("/objects/")[1]
     source = "gs://" + scr_bucket
-    sp = subprocess.Popen(["gsutil","label","get",source])
-    outs, errs = sp.communicate()
+    sp = subprocess.Popen(["gsutil","label","get",source],stdout=subprocess.PIPE)
     out = sp.stdout.read()
     log.info(out)
     dr_flg = json.loads(str(out))
