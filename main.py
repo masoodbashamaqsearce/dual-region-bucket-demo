@@ -30,13 +30,14 @@ def create():
     out = sp.stdout.read()
     dr_flg = json.loads(str(out,"utf-8").replace("\n",""))
     log.info(dr_flg)
+    log.info(dr_flg['dual-region'])
     if "dual-region" in dr_flg.keys():
         if dr_flg["dual-region"] is not True:
             log.info("bucket is not dual region, event skipped")
             return ("ok",203)
     else:
         log.info("bucket is not dual region, event skipped")
-        return ("ok",203)
+        return ("ok",205)
     if obj_name[-1] == '/':
         log.info("folder created..., event skipped")
         return('ok',204)
