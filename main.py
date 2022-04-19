@@ -12,16 +12,16 @@ def create():
     logging_client = logging.Client()
     logging_client.setup_logging()
     data = request.get_json()
-    log.info("create method called")
+    #log.info("create method called")
     wholedata = f"wholedata : {data} ::end of data"
     #log.info(wholedata)
     prt = "methodName:"+data['protoPayload']['methodName']
     #log.info(prt)
-    prt = prt+"\nresourceName:"+data['protoPayload']['resourceName']
+    prt = prt+" -- resourceName:"+data['protoPayload']['resourceName']
     #log.info(prt)
-    prt = prt+"\nbucket_name:"+data['resource']['labels']['bucket_name']
+    prt = prt+" -- bucket_name:"+data['resource']['labels']['bucket_name']
     #log.info(prt)
-    prt = prt+"\nlocation:"+data['resource']['labels']['location']
+    prt = prt+" -- location:"+data['resource']['labels']['location']
     log.info(prt)
     scr_bucket = data['resource']['labels']['bucket_name']
     obj_name = data['protoPayload']['resourceName'].split("/objects/")[1]
@@ -53,7 +53,14 @@ def create():
     dest_bucket = scr_bucket + "-delhi-backup/"
     dest = "gs://" + dest_bucket + obj_name
     proc = subprocess.Popen(["gsutil", "-m", "cp", "-r", "-p", source, dest])
-    return ("OK", 200)
+    try:
+        outs, errs = proc.communicate()
+        return ('OK', 200)
+    except Exception as e:
+        log.info(e)
+        proc.kill()
+        outs, errs = proc.communicate()
+        return ('NOT OK', 400)
 
 @app.route("/update", methods=['POST'])
 def update():
