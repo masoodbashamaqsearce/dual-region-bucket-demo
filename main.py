@@ -117,7 +117,7 @@ def update():
     sp = os.popen(cmd)
     outs = sp.read()
     log.info(outs)
-    md = '{"'+outs[1:-1].split("Metadata:")[1].split('Hash')[0].replace(": ",'": "').replace("\n",'", "')+'"}'
+    md = '{'+outs[1:-1].split("Metadata:")[1].split('Hash')[0].replace(": ",'": "').replace("\n",'", "')[4:-4]+'}'
     log.info(md)
     #dt = json.loads(outs)
     #dt['metdata']
