@@ -81,6 +81,29 @@ def update():
     scr_bucket = data['resource']['labels']['bucket_name']
     obj_name = data['protoPayload']['resourceName'].split("/objects/")[1]
     source = "gs://" + scr_bucket + "/" + obj_name
+    sp = subprocess.Popen(["gsutil","label","get",source],stdout=subprocess.PIPE)
+    out = sp.stdout.read()
+    if "no label configuration" not in str(out,"utf-8"):
+        #log.info(type(out))
+        #log.info(out)
+        try:
+            dr_flg = json.loads(str(out,"utf-8"))
+        except:
+            log.info("not a dual-region bucket, event skipped")
+            return ("OK",200)
+        if "dual-region" in dr_flg.keys():
+            if dr_flg["dual-region"] != "true":
+                log.info("bucket is not dual region, event skipped")
+                return ("ok",200)
+        else:
+            log.info("bucket is not dual region, event skipped")
+            return ("ok",200)
+    else:
+        log.info("bucket is not dual region, event skipped")
+        return ("ok",200)
+    if obj_name[-1] == '/':
+        log.info("folder created..., event skipped")
+        return('ok',200)
     dest_bucket = scr_bucket + "-delhi-backup/"
     dest = "gs://" + dest_bucket + obj_name
     sp = subprocess.Popen(["gsutil","acl","get",source],stdout=subprocess.PIPE)
