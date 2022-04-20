@@ -81,7 +81,7 @@ def update():
     scr_bucket = data['resource']['labels']['bucket_name']
     obj_name = data['protoPayload']['resourceName'].split("/objects/")[1]
     source = "gs://" + scr_bucket
-    sp = subprocess.Popen(["gsutil","label","get",scr_bucket],stdout=subprocess.PIPE)
+    sp = subprocess.Popen(["gsutil","label","get",source],stdout=subprocess.PIPE)
     out = sp.stdout.read()
     if "no label configuration" not in str(out,"utf-8"):
         #log.info(type(out))
