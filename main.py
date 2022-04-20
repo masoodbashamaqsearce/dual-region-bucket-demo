@@ -119,7 +119,7 @@ def update():
     outs = ' '.join(outs.split())
     log.info(outs)
     md = outs[1:-1].split("Metadata: ")[1].split(' Hash')[0].replace(": ",'": "')
-    md = '{' + md + '}'
+    md = '{"' + md + '"}'
     log.info(md)
     #dt = json.loads(outs)
     #dt['metdata']
