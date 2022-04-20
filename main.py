@@ -106,12 +106,11 @@ def update():
         return('ok',200)
     dest_bucket = scr_bucket + "-delhi-backup/"
     dest = "gs://" + dest_bucket + obj_name
-    sp = subprocess.Popen(["gsutil","acl","get",source],stdout=subprocess.PIPE)
-    out = sp.stdout.read()
-    #log.info(type(out))
-    #log.info(out)
-    acl = json.loads(str(out,"utf-8"))
-    sp = subprocess.Popen(["gsutil","acl","set",str(acl), dest],stdout=subprocess.PIPE)
+    sp = subprocess.Popen(["gsutil","acl","get",source, "> acl.txt"],stdout=subprocess.PIPE)
+    out,err = sp.communicate()
+    # $out = sp.stdout.read()
+    #acl = json.loads(str(out,"utf-8"))
+    sp = subprocess.Popen(["gsutil","acl","set","acl.txt", dest],stdout=subprocess.PIPE)
     outs,err = sp.communicate()
     log.info(err)
     log.info(outs)
