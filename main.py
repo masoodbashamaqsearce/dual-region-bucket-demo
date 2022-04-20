@@ -67,17 +67,24 @@ def update():
     logging_client = logging.Client()
     logging_client.setup_logging()
     data = request.get_json()
-    log.info("root method called...")
+    #log.info("root method called...")
     wholedata = f"wholedata : {data} ::end of data"
-    log.info(wholedata)
+    #log.info(wholedata)
     prt = "data['protoPayload']['methodName']:"+data['protoPayload']['methodName']
+    #log.info(prt)
+    prt = prt+" -- data['protoPayload']['resourceName']:"+data['protoPayload']['resourceName']
+    #log.info(prt)
+    prt = prt+ " -- data['resource']['labels']['bucket_name']:"+data['resource']['labels']['bucket_name']
+    #log.info(prt)
+    prt = prt + "-- data['resource']['labels']['location']:"+data['resource']['labels']['location']
     log.info(prt)
-    prt = "data['protoPayload']['resourceName']:"+data['protoPayload']['resourceName']
-    log.info(prt)
-    prt = "data['resource']['labels']['bucket_name']:"+data['resource']['labels']['bucket_name']
-    log.info(prt)
-    prt = "data['resource']['labels']['location']:"+data['resource']['labels']['location']
-    log.info(prt)
+    scr_bucket = data['resource']['labels']['bucket_name']
+    obj_name = data['protoPayload']['resourceName'].split("/objects/")[1]
+    source = "gs://" + scr_bucket + "/" + obj_name
+    sp = subprocess.Popen(["gsutil","acl","get",source],stdout=subprocess.PIPE)
+    out = sp.stdout.read()
+    log.info(type(out))
+    log.info(out)
     return ('OK', 200)
 
 @app.route("/", methods=['POST'])
