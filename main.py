@@ -109,7 +109,7 @@ def update():
     dest = "gs://" + dest_bucket + obj_name
     sp = subprocess.Popen(["gsutil","acl","get",source, "> acl.txt"],stdout=subprocess.PIPE)
     out,err = sp.communicate()
-    # $out = sp.stdout.read()
+    #$out = sp.stdout.read()
     #acl = json.loads(str(out,"utf-8"))
     sp = subprocess.Popen(["gsutil","acl","set","acl.txt", dest],stdout=subprocess.PIPE)
     outs,err = sp.communicate()
