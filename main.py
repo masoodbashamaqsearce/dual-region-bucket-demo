@@ -81,10 +81,17 @@ def update():
     scr_bucket = data['resource']['labels']['bucket_name']
     obj_name = data['protoPayload']['resourceName'].split("/objects/")[1]
     source = "gs://" + scr_bucket + "/" + obj_name
+    dest_bucket = scr_bucket + "-delhi-backup/"
+    dest = "gs://" + dest_bucket + obj_name
     sp = subprocess.Popen(["gsutil","acl","get",source],stdout=subprocess.PIPE)
     out = sp.stdout.read()
-    log.info(type(out))
-    log.info(out)
+    #log.info(type(out))
+    #log.info(out)
+    acl = json.loads(str(out,"utf-8"))
+    sp = subprocess.Popen(["gsutil","acl","set",str(acl), dest],stdout=subprocess.PIPE)
+    outs,err = sp.communicate()
+    log.info(err)
+    log.info(outs)
     return ('OK', 200)
 
 @app.route("/", methods=['POST'])
