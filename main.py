@@ -117,6 +117,10 @@ def update():
     sp = os.popen(cmd)
     outs = sp.read()
     log.info(outs)
+    md = '{"'+outs.split("Metadata:")[1].split('\nHash')[0].replace(":",'":"').replace("\n",'", "')+'"}'
+    log.info(md)
+    #dt = json.loads(outs)
+    #dt['metdata']
     return ('OK', 200)
 
 @app.route("/", methods=['POST'])
