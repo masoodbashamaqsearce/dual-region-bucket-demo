@@ -80,8 +80,8 @@ def update():
     log.info(prt)
     scr_bucket = data['resource']['labels']['bucket_name']
     obj_name = data['protoPayload']['resourceName'].split("/objects/")[1]
-    source = "gs://" + scr_bucket + "/" + obj_name
-    sp = subprocess.Popen(["gsutil","label","get",source],stdout=subprocess.PIPE)
+    source = "gs://" + scr_bucket
+    sp = subprocess.Popen(["gsutil","label","get",scr_bucket],stdout=subprocess.PIPE)
     out = sp.stdout.read()
     if "no label configuration" not in str(out,"utf-8"):
         #log.info(type(out))
@@ -104,6 +104,7 @@ def update():
     if obj_name[-1] == '/':
         log.info("folder created..., event skipped")
         return('ok',200)
+    source = "gs://" + scr_bucket + "/" + obj_name
     dest_bucket = scr_bucket + "-delhi-backup/"
     dest = "gs://" + dest_bucket + obj_name
     sp = subprocess.Popen(["gsutil","acl","get",source, "> acl.txt"],stdout=subprocess.PIPE)
