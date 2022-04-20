@@ -108,17 +108,15 @@ def update():
     dest_bucket = scr_bucket + "-delhi-backup/"
     dest = "gs://" + dest_bucket + obj_name
     cmd = "gsutil"+" acl"+" get "+ source + " > /acl.txt "
-    log.info(cmd)
     sp = os.popen(cmd)
     out = sp.read()
-    #$out = sp.stdout.read()
-    #acl = json.loads(str(out,"utf-8"))
     cmd = "gsutil"+" acl"+" set"+" /acl.txt "+ dest
-    log.info(cmd)
     sp = os.popen(cmd)
     outs = sp.read()
-    #log.info(err)
-    #log.info(outs)
+    cmd = "gsutil"+" stat "+ source
+    sp = os.popen(cmd)
+    outs = sp.read()
+    log.info(outs)
     return ('OK', 200)
 
 @app.route("/", methods=['POST'])
