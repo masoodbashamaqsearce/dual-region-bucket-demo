@@ -116,13 +116,17 @@ def update():
     cmd = "gsutil"+" stat "+ source
     sp = os.popen(cmd)
     outs = sp.read()
-    outs = ' '.join(outs.split())
-    log.info(outs)
-    md = outs[1:-1].split("Metadata: ")[1].split(' Hash')[0].replace(": ",'": "')
-    md = '{"' + md + '"}'
-    log.info(md)
-    #dt = json.loads(outs)
-    #dt['metdata']
+    a=outs.split("Metadata:")[1].split("Hash")[0].split('\n')[1:-1]
+    b={}
+    cmd = "gsutil setmeta "
+    for x in range(0,len(a)):
+        tmp = ' '.join(a[x].split())
+        b["x-goog-meta-"+tmp.split(': ')[0]] = tmp.split(': ')[1]
+        cmd = cmd + '-h "' + "x-goog-meta-"+tmp.split(': ')[0] + ":" + tmp.split(': ')[1] + '" '
+    log.info(b)
+    cmd = cmd + dest
+    sp = os.popen(cmd)
+    log.info(sp.read())
     return ('OK', 200)
 
 @app.route("/", methods=['POST'])
