@@ -131,20 +131,7 @@ def update():
 
 @app.route("/", methods=['POST'])
 def main():
-    logging_client = logging.Client()
-    logging_client.setup_logging()
-    data = request.get_json()
-    log.info("root method called...")
-    wholedata = f"wholedata : {data} ::end of data"
-    log.info(wholedata)
-    prt = "data['protoPayload']['methodName']:"+data['protoPayload']['methodName']
-    log.info(prt)
-    prt = "data['protoPayload']['resourceName']:"+data['protoPayload']['resourceName']
-    log.info(prt)
-    prt = "data['resource']['labels']['bucket_name']:"+data['resource']['labels']['bucket_name']
-    log.info(prt)
-    prt = "data['resource']['labels']['location']:"+data['resource']['labels']['location']
-    log.info(prt)
+    log.info("root method call")
     return ('OK', 200)
 
 @app.route("/delete", methods=['POST'])
@@ -152,18 +139,48 @@ def delete():
     logging_client = logging.Client()
     logging_client.setup_logging()
     data = request.get_json()
-    log.info("root method called...")
+    #log.info("root method called...")
     wholedata = f"wholedata : {data} ::end of data"
-    log.info(wholedata)
+    #log.info(wholedata)
     prt = "data['protoPayload']['methodName']:"+data['protoPayload']['methodName']
+    #log.info(prt)
+    prt = prt+" -- data['protoPayload']['resourceName']:"+data['protoPayload']['resourceName']
+    #log.info(prt)
+    prt = prt+ " -- data['resource']['labels']['bucket_name']:"+data['resource']['labels']['bucket_name']
+    #log.info(prt)
+    prt = prt + "-- data['resource']['labels']['location']:"+data['resource']['labels']['location']
     log.info(prt)
-    prt = "data['protoPayload']['resourceName']:"+data['protoPayload']['resourceName']
-    log.info(prt)
-    prt = "data['resource']['labels']['bucket_name']:"+data['resource']['labels']['bucket_name']
-    log.info(prt)
-    prt = "data['resource']['labels']['location']:"+data['resource']['labels']['location']
-    log.info(prt)
-    return ('OK', 200)
+    scr_bucket = data['resource']['labels']['bucket_name']
+    obj_name = data['protoPayload']['resourceName'].split("/objects/")[1]
+    source = "gs://" + scr_bucket
+    sp = subprocess.Popen(["gsutil","label","get",source],stdout=subprocess.PIPE)
+    out = sp.stdout.read()
+    if "no label configuration" not in str(out,"utf-8"):
+        #log.info(type(out))
+        #log.info(out)
+        try:
+            dr_flg = json.loads(str(out,"utf-8"))
+        except:
+            log.info("not a dual-region bucket, event skipped")
+            return ("OK",200)
+        if "dual-region" in dr_flg.keys():
+            if dr_flg["dual-region"] != "true":
+                log.info("bucket is not dual region, event skipped")
+                return ("ok",200)
+        else:
+            log.info("bucket is not dual region, event skipped")
+            return ("ok",200)
+    else:
+        log.info("bucket is not dual region, event skipped")
+        return ("ok",200)
+    source = "gs://" + scr_bucket + "/" + obj_name
+    dest_bucket = scr_bucket + "-delhi-backup/"
+    dest = "gs://" + dest_bucket + obj_name
+    cmd = "gsutil"+" rm"+" -r "+ dest
+    sp = os.popen(cmd)
+    log.info(sp.read())
+    return('OK',200)
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
