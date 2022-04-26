@@ -176,7 +176,7 @@ def delete():
     source = "gs://" + scr_bucket + "/" + obj_name
     dest_bucket = scr_bucket + "-delhi-backup/"
     dest = "gs://" + dest_bucket + obj_name
-    cmd = "gsutil"+" rm"+" -r "+ dest
+    cmd = "gsutil" + " rm" + " -r " + '"' + dest + '"'
     sp = os.popen(cmd)
     log.info(sp.read())
     return('OK',200)
