@@ -14,7 +14,7 @@ def create():
     data = request.get_json()
     #log.info("create method called")
     wholedata = f"wholedata : {data} ::end of data"
-    #log.info(wholedata)
+    log.info(wholedata)
     prt = "methodName:"+data['protoPayload']['methodName']
     #log.info(prt)
     prt = prt+" -- resourceName:"+data['protoPayload']['resourceName']
