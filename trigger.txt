@@ -1,0 +1,26 @@
+gcloud eventarc triggers create trigger-test-create \
+--location=asia-south1 \
+--destination-run-service=dual-region-bucket-demo \
+--destination-run-region=asia-south1 \
+--destination-run-path=/ \
+--service-account=fk-test-ceph-cluster-sa@searce-playground-v1.iam.gserviceaccount.com \
+--event-filters=type=google.cloud.audit.log.v1.written \
+--event-filters=serviceName=storage.googleapis.com \
+--event-filters=methodName=storage.objects.create \
+--event-filters=bucket=masood-mumbai
+
+
+
+gcloud eventarc triggers create trigger-test-create \
+--location=asia-south1 \
+--destination-run-service=dual-region-bucket-demo \
+--destination-run-region=asia-south1 \
+--destination-run-path=/ \
+--service-account=fk-test-ceph-cluster-sa@searce-playground-v1.iam.gserviceaccount.com \
+--event-filters=type=google.cloud.storage.object.v1.finalized \
+--event-filters=serviceName=storage.googleapis.com \
+--event-filters=bucket=masood-mumbai
+
+
+
+print((c*i).______(thickness-1)+c+(c*i).______(thickness-1))

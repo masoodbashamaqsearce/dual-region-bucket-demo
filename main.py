@@ -12,7 +12,7 @@ def create():
     logging_client = logging.Client()
     logging_client.setup_logging()
     data = request.get_json()
-    #log.info("create method called")
+    log.info("create method called")
     wholedata = f"wholedata : {data} ::end of data"
     log.info(wholedata)
     prt = "methodName:"+data['protoPayload']['methodName']
